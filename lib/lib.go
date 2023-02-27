@@ -3,7 +3,7 @@ package lib
 import (
 	crand "crypto/rand"
 	_ "embed"
-	"encoding/base64"
+	"encoding/hex"
 	"html/template"
 	"log"
 	"math/rand"
@@ -31,7 +31,7 @@ var tmpl string
 func KeyGen() string {
 	key := make([]byte, 32)
 	_, _ = crand.Read(key)
-	return base64.RawStdEncoding.EncodeToString(key)
+	return hex.EncodeToString(key)
 }
 
 func StrGen(length int) string {
@@ -71,11 +71,7 @@ func Run(cfg Config) {
 	if err != nil {
 		log.Fatal("Cannot create file")
 	}
-	key, err := base64.RawStdEncoding.DecodeString(cfg.Key)
-	if err != nil {
-		log.Fatal("Invalid key")
-	}
-	_, _ = out.Write(Compress(data, key))
+	_, _ = out.Write(Compress(data, []byte(cfg.Key)))
 	out.Close()
 
 	srcf, err := os.Create(cfg.Src)

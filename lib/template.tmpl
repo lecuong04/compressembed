@@ -4,26 +4,21 @@ import (
 	"io"
 	_ "embed"
 	"compress/zlib"
-	"encoding/base64"
 	"bytes"
 )
 
 //go:embed {{.Output}}
 var {{.TmpVar}} []byte // Don't use this variable
 
-func {{.Func}}() []byte {
-	key, err := base64.RawStdEncoding.DecodeString("{{.Key}}")
-	if err != nil {
-		return nil
-	}
+func {{.Func}}(data, key []byte) []byte {
 	var buf bytes.Buffer
-	r, err := zlib.NewReaderDict(bytes.NewReader({{.TmpVar}}), key)
+	r, err := zlib.NewReaderDict(bytes.NewReader(data), key)
 	if err != nil {
 		return nil
 	}
-	defer r.Close()
-	{{.TmpVar}} = nil
 	io.Copy(&buf, r)
+	r.Close()
 	return buf.Bytes()
 }
-var {{.Var}} = {{.Func}}()
+
+var {{.Var}} = {{.Func}}({{.TmpVar}}, []byte("{{.Key}}"))

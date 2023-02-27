@@ -13,8 +13,8 @@ func Compress(data, key []byte) []byte {
 	if err != nil {
 		return nil
 	}
-	defer w.Close()
 	_, _ = w.Write(data)
+	w.Close()
 	return buf.Bytes()
 }
 
