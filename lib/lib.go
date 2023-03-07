@@ -20,7 +20,6 @@ type Config struct {
 	Key    string
 	Input  string
 	Output string
-	TmpVar string
 	Var    string
 	Src    string
 }

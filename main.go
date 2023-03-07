@@ -11,7 +11,6 @@ var cfg = lib.Config{
 	Input:  "",
 	Key:    lib.KeyGen(),
 	Output: "resource.dat",
-	TmpVar: lib.StrGen(4),
 	Var:    "",
 	Src:    "compressed.go",
 }
